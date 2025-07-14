@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSAA Instructor Designation Form (TC/F01)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='initial.css') }}">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="initial-container">
+
+    <!-- الشعار -->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logoofsaudi.png') }}" alt="Logo">
+    </div>
+
+    <!-- العنوان -->
+    <h2>PSAA INSTRUCTOR DESIGNATION FORM (TC/F01)</h2>
+    <div class="sub-header">(Technical Training Instructor)</div>
+
+    <!-- تفاصيل الخطاب -->
+    <div class="details-section">
+        <p><strong>To:</strong> {{ trainer.name }}</p>
+        <p><strong>From:</strong> Director of Technical Training</p>
+        <p><strong>Date:</strong> {{ current_date }}</p>
+        <p><strong>Subject:</strong> Designation</p>
+        <p><strong>Dear:</strong> {{ trainer.name }}</p>
+    </div>
+
+    <!-- النموذج -->
+    <form method="POST" action="{{ url_for('tcfoi_page', trainer_id=trainer.id) }}">
+        <table class="recurrent-table">
+            <thead>
+                <tr>
+                    <th>Instructor:</th>
+                    <th>Completion Date</th>
+                    <th>Designation date:</th>
+                    <th class="no-print">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tcfoi-table">
+                {% for row in records %}
+                <tr>
+                    <td><input type="text" name="Instructor[]" value="{{ row.Instructor }}" required></td>
+                    <td><input type="date" name="completion_date[]" value="{{ row.completion_date }}" required></td>
+                    <td><input type="text" name="Designation_date[]" value="{{ row.Designation_date }}" required></td>
+                    <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- زر إضافة صف -->
+        <div class="no-print" style="text-align: right; margin-top: 10px;">
+            <button type="button" class="add-row-btn" onclick="addRow()">+ Add Row</button>
+        </div>
+
+        <!-- التوقيع -->
+        <div class="signature-section-horizontal">
+            <div class="signature-block">
+                <label><strong>Director Technical Training Approval:</strong></label>
+                <div class="signature-row">
+                    <label>(Name)</label>
+                    <input type="text" name="director_name" placeholder="Name">
+                    <label>(Signature)</label>
+                    <input type="text" name="director_signature" placeholder="Signature">
+                    <label>Date</label>
+                    <input type="text" name="director_date" placeholder="Date">
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار -->
+        <div class="bottom-buttons no-print">
+            <button type="submit" class="form-btn">💾 Submit</button>
+            <button type="button" class="form-btn" onclick="printBothPages()">🖨 Print</button>
+            <a href="{{ url_for('dashboard') }}" class="form-btn">⬅ Back</a>
+            <a href="{{ url_for('download_tcfoi_pdf', trainer_id=trainer.id) }}" class="form-btn">📄 Download PDF</a>
+        </div>
+    </form>
+
+    <!-- التذييل -->
+    <div class="footer">
+        <div class="footer-left">PSAA/TC/F01</div>
+        <div class="footer-right">{{ current_date }}</div>
+    </div>
+</div>
+
+<!-- سكربتات -->
+<script>
+    function addRow() {
+        const table = document.getElementById("tcfoi-table");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><input type="text" name="course[]" required></td>
+            <td><input type="date" name="completion_date[]" required></td>
+            <td><input type="text" name="verified_by[]" required></td>
+            <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
+        `;
+        table.appendChild(row);
+    }
+
+    function removeRow(btn) {
+        btn.closest("tr").remove();
+    }
+
+    function printBothPages() {
+        fetch("{{ url_for('initial_page', trainer_id=trainer.id) }}")
+            .then(response => response.text())
+            .then(initialHtml => {
+                const newWin = window.open('', '_blank');
+                newWin.document.write('<html><head><title>Print</title>');
+                newWin.document.write(`<link rel="stylesheet" href="{{ url_for('static', filename='initial.css') }}">`);
+                newWin.document.write('</head><body>');
+
+                // صفحة INITIAL
+                newWin.document.write(initialHtml);
+
+                // فاصل بين الصفحتين
+                newWin.document.write('<div style="page-break-before: always;"></div>');
+
+                // صفحة TCFOI الحالية
+                const tcfoiContent = document.querySelector('.initial-container').outerHTML;
+                newWin.document.write(tcfoiContent);
+
+                newWin.document.write('</body></html>');
+                newWin.document.close();
+                newWin.focus();
+
+                setTimeout(() => {
+                    newWin.print();
+                    newWin.close();
+                }, 500);
+            });
+    }
+</script>
+</body>
+</html>

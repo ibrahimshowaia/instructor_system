@@ -1,0 +1,165 @@
+.initial-container {
+    background-color: white;
+    width: 1100px; /* تم التكبير */
+    margin: 40px auto;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    height: 90px;
+    display: block;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #003366;
+}
+
+p {
+    font-size: 16px;
+    margin: 5px 30px;
+}
+
+.instructor-category {
+    text-align: left;
+    margin: 10px 30px;
+}
+
+.section-select {
+    font-size: 15px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+/* الجدول */
+.recurrent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+}
+
+.recurrent-table th {
+    background-color: #004b8d;
+    color: white;
+}
+
+.recurrent-table td, .recurrent-table th {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+/* خانة to continue */
+.recommendation-line {
+    margin: 40px 30px 10px 30px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* توقيع واحد أفقي */
+.signature-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 30px 0 30px;
+}
+
+.signature-box {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.signature-box label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.signature-box input {
+    border: none;
+    border-bottom: 1px solid #333;
+    padding: 5px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+/* الأزرار */
+.bottom-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.bottom-buttons button,
+.bottom-buttons a {
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.bottom-buttons .save-btn {
+    background-color: #28a745;
+}
+
+.bottom-buttons .print-btn {
+    background-color: #007bff;
+}
+
+.bottom-buttons .back-btn {
+    background-color: #6c757d;
+}
+
+.bottom-buttons button:hover,
+.bottom-buttons a:hover {
+    opacity: 0.9;
+}
+
+/* التذييل */
+.footer-line {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+    padding: 0 30px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* للطباعة */
+@media print {
+    .bottom-buttons,
+    .no-print {
+        display: none !important;
+    }
+
+    input,
+    select {
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    .footer-line {
+        margin-top: 100px;
+    }
+}

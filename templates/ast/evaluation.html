@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instructor Evaluation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        @media print {
+            .no-print,
+            .bottom-buttons {
+                display: none !important;
+            }
+
+            input,
+            select,
+            textarea {
+                border: none;
+                background: transparent;
+                border-bottom: 1px solid black;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="qualification-container">
+
+    <!-- شعار -->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logoofsaudi.png') }}" alt="Saudia Logo">
+    </div>
+
+    <!-- العنوان -->
+    <h2>Instructor Evaluation Form</h2>
+
+    <!-- النموذج -->
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Instructor Name:</label>
+            <input type="text" name="trainer_name" value="{{ trainer.name }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Trainer ID (PN):</label>
+            <input type="text" name="trainer_id" value="{{ trainer.trainer_id }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Evaluator Name:</label>
+            <input type="text" name="evaluator" required placeholder="Enter evaluator's name">
+        </div>
+
+        <div class="form-group">
+            <label>Evaluation Date:</label>
+            <input type="date" name="evaluation_date" required>
+        </div>
+
+        <div class="form-group">
+            <label>Rating:</label>
+            <select name="rating" required>
+                <option value="">-- Select --</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Weak">Weak</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>If Weak, provide reason:</label>
+            <input type="text" name="weak_reason" placeholder="Reason for weak rating (if any)">
+        </div>
+
+        <div class="form-group">
+            <label>Additional Notes:</label>
+            <textarea name="notes" rows="3" placeholder="Any comments or feedback..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Attach Evaluation File (PDF/DOC):</label>
+            <input type="file" name="file" accept=".pdf,.doc,.docx">
+        </div>
+
+        <!-- أزرار -->
+        <div class="bottom-buttons no-print">
+            <button type="submit" class="form-btn save-btn">💾 Save</button>
+            <a href="{{ url_for('trainer_detail', trainer_id=trainer.trainer_id) }}" class="form-btn back-btn">⬅ Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

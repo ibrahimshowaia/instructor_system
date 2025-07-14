@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trainer Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7fc;
+            padding: 50px;
+            zoom: 1.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #004b8d;
+            margin-bottom: 30px;
+        }
+
+        .info-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .info-group label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #004b8d;
+            color: white;
+        }
+
+        .add-row-btn {
+            margin-top: 15px;
+            background-color: #004b8d;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-row-btn:hover {
+            background-color: #003366;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .save-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .form-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 25px;
+            background-color: #004b8d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-btn:hover {
+            background-color: #003366;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .delete-btn {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #96281b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Trainer Details</h2>
+
+        <form method="POST" action="{{ url_for('trainer_detail', trainer_id=trainer.id) }}">
+            <div class="info-group">
+                <div style="flex:1; margin-right: 10px;">
+                    <label>Trainer Name:</label>
+                    <input type="text" name="trainer_name" value="{{ trainer.name }}">
+                </div>
+                <div style="flex:1; margin-right: 10px;">
+                    <label>Trainer ID:</label>
+                    <input type="text" name="trainer_id" value="{{ trainer.trainer_id }}">
+                </div>
+                <div style="flex:1;">
+                    <label>Base Month:</label>
+                    <input type="date" name="base_month" value="{{ trainer.base_month }}">
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Details</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-table">
+                    {% for row in details %}
+                    <tr>
+                        <td><input type="text" name="item[]" value="{{ row.item }}"></td>
+                        <td><input type="text" name="detail[]" value="{{ row.detail }}"></td>
+                        <td><button type="button" class="delete-btn" onclick="removeRow(this)">🗑</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="button" class="add-row-btn" onclick="addRow()">+ Add Row</button>
+
+            <br>
+            <button type="submit" class="save-btn">💾 Save</button>
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('initial_page', trainer_id=trainer.id) }}" class="form-btn">INITIAL</a>
+            <a href="{{ url_for('recurrent_page', trainer_id=trainer.id) }}" class="form-btn">RECURRENT</a>
+            <a href="{{ url_for('add_qualification', trainer_id=trainer.id) }}" class="form-btn">ADD</a>
+            <a href="{{ url_for('evaluation', trainer_id=trainer.id) }}" class="form-btn">EVALUATION</a>
+        </div>
+    </div>
+
+    <script>
+        function addRow() {
+            const table = document.getElementById("detail-table");
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><input type="text" name="item[]"></td>
+                <td><input type="text" name="detail[]"></td>
+                <td><button type="button" class="delete-btn" onclick="removeRow(this)">🗑</button></td>
+            `;
+            table.appendChild(row);
+        }
+
+        function removeRow(button) {
+            button.closest("tr").remove();
+        }
+    </script>
+</body>
+</html>

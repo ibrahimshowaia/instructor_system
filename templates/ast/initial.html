@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSAA Instructor Qualification Record</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='initial.css') }}">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="initial-container">
+    <!-- Logo -->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logoofsaudi.png') }}" alt="Logo">
+    </div>
+
+    <!-- Title -->
+    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (INITIAL)</h2>
+    <div class="sub-header">(Technical Training Instructor)</div>
+
+    <!-- Trainer Info -->
+    <div class="details-section">
+        <p><strong>Name:</strong> {{ trainer[1] }}</p>
+        <p><strong>PN:</strong> {{ trainer[2] }}</p>
+        <p>
+            <strong>Instructor Category:</strong>
+            <select name="category">
+                <option value="AST">AST</option>
+                <option value="RST">RST</option>
+            </select>
+        </p>
+        <p><strong>Date:</strong> {{ current_date }}</p>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" action="{{ url_for('initial_page', trainer_id=trainer[0]) }}">
+        <table class="recurrent-table">
+            <thead>
+                <tr>
+                    <th>Course (As Applicable)</th>
+                    <th>Completion Date</th>
+                    <th>Verified By (Name, Signature)</th>
+                    <th class="no-print">Action</th>
+                </tr>
+            </thead>
+            <tbody id="course-table">
+                {% for row in records %}
+                <tr>
+                    <td><input type="text" name="course[]" value="{{ row.course }}" required></td>
+                    <td><input type="date" name="date[]" value="{{ row.completion_date }}" required></td>
+                    <td><input type="text" name="verified[]" value="{{ row.verified_by }}" required></td>
+                    <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="no-print" style="text-align: right; margin-top: 10px;">
+            <button type="button" class="add-row-btn" onclick="addRow()">+ Add Row</button>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section-horizontal">
+            <div class="signature-block">
+                <label><strong>Manager Technical Training Recommendation:</strong></label>
+                <p>To be designated as: <input type="text" name="designation" placeholder="e.g. Avionics Instructor"></p>
+
+                <div class="signature-row">
+                    <label>(Name)</label>
+                    <input type="text" name="manager_name">
+
+                    <label>(Signature)</label>
+                    <input type="text" name="manager_signature">
+
+                    <label>Date</label>
+                    <input type="text" name="manager_date" placeholder="Date">
+                </div>
+            </div>
+
+            <div class="signature-block">
+                <label><strong>Director Technical Training Approval:</strong></label>
+                <p>The recommendation above is approved</p>
+
+                <div class="signature-row">
+                    <label>(Name)</label>
+                    <input type="text" name="director_name">
+
+                    <label>(Signature)</label>
+                    <input type="text" name="director_signature">
+
+                    <label>Date</label>
+                    <input type="text" name="director_date" placeholder="Date">
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="bottom-buttons no-print">
+            <button type="submit" class="form-btn">💾 Submit</button>
+            <button type="button" class="form-btn" onclick="window.print()">🖨 Print</button>
+            <a href="{{ url_for('dashboard') }}" class="form-btn">⬅ Back</a>
+            <a href="{{ url_for('download_initial_pdf', trainer_id=trainer[0]) }}" class="form-btn">📄 Download PDF</a>
+        </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-left">PSAA/TT/F01</div>
+        <div class="footer-right">{{ current_date }}</div>
+    </div>
+</div>
+
+<script>
+    function addRow() {
+        const table = document.getElementById("course-table");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><input type="text" name="course[]" required></td>
+            <td><input type="date" name="date[]" required></td>
+            <td><input type="text" name="verified[]" required></td>
+            <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
+        `;
+        table.appendChild(row);
+    }
+
+    function removeRow(btn) {
+        btn.closest("tr").remove();
+    }
+</script>
+</body>
+</html>

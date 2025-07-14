@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Trainer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .add-trainer-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .add-trainer-container h2 {
+            text-align: center;
+            color: #004b8d;
+            margin-bottom: 25px;
+        }
+
+        .add-trainer-container input[type="text"],
+        .add-trainer-container input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .add-trainer-container input[type="submit"] {
+            width: 100%;
+            background-color: #004b8d;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .add-trainer-container input[type="submit"]:hover {
+            background-color: #00376c;
+        }
+
+        .add-trainer-container .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #004b8d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .add-trainer-container .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="add-trainer-container">
+    <h2>Add New Trainer</h2>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Trainer Name" required>
+        <input type="text" name="trainer_id" placeholder="Trainer ID" required>
+        <input type="date" name="base_month" required>
+        <input type="submit" value="Add Trainer">
+    </form>
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+</div>
+
+</body>
+</html>

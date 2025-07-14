@@ -1,0 +1,143 @@
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f5f8fc;
+    padding: 40px;
+    margin: 0;
+    color: #333;
+}
+
+/* الحاويات العامة لكل الصفحات */
+.container,
+.initial-container,
+.tcfoi-container,
+.qualification-container {
+    max-width: 1000px;
+    margin: auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+/* العنوان الرئيسي */
+h2 {
+    text-align: center;
+    color: #004b8d;
+    margin-bottom: 20px;
+}
+
+/* الحقول والأزرار */
+button,
+input,
+select,
+textarea {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+button {
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover {
+    opacity: 0.95;
+    transform: scale(1.02);
+}
+
+/* أزرار وظيفية محددة */
+button.save-btn {
+    background-color: #004b8d;
+    color: white;
+    border: none;
+}
+
+button.print-btn {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+}
+
+button.back-btn {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+}
+
+button.add-row-btn {
+    margin-top: 10px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+}
+
+/* الجداول */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #004b8d;
+    color: white;
+    font-size: 15px;
+}
+
+td {
+    font-size: 14px;
+    color: #333;
+}
+
+/* الشعار */
+.logo img {
+    max-height: 60px;
+    display: block;
+    margin: auto;
+}
+
+/* التذييل */
+.footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666;
+}
+
+/* الطباعة */
+@media print {
+    button,
+    .add-row-btn,
+    .print-btn,
+    .save-btn,
+    .back-btn,
+    .form-btn {
+        display: none !important;
+    }
+
+    body {
+        background-color: white;
+        padding: 0;
+    }
+
+    .container,
+    .initial-container,
+    .tcfoi-container,
+    .qualification-container {
+        box-shadow: none;
+        padding: 0;
+    }
+}

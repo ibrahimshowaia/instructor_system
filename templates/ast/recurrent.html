@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSAA Instructor Qualification Record (Recurrent)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='recurrent.css') }}">
+    <style>
+        @media print {
+            .save-btn, .print-btn, .back-btn, .add-row-btn {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="initial-container">
+    <!-- الشعار -->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logoofsaudi.png') }}" alt="Logo">
+    </div>
+
+    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (RECURRENT)</h2>
+
+    <!-- بيانات المدرب -->
+    <p><strong>Instructor Name:</strong> {{ trainer_name }}</p>
+    <p><strong>PN:</strong> {{ trainer_id }}</p>
+    <p><strong>Date:</strong> {{ date }}</p>
+
+    <!-- Instructor Category -->
+    <div class="instructor-category">
+        <label><strong>Instructor Category:</strong>
+            <select name="section" class="section-select" required>
+                <option value="">-- Select --</option>
+                <option value="AST" {% if section == 'AST' %}selected{% endif %}>AST</option>
+                <option value="RST" {% if section == 'RST' %}selected{% endif %}>RST</option>
+            </select>
+        </label>
+    </div>
+
+    <form method="POST">
+        <!-- جدول التدريب -->
+        <table class="recurrent-table" id="data-table">
+            <thead>
+                <tr>
+                    <th>Course (As Applicable) </th>
+                    <th>Completion Date</th>
+                    <th>Verified By</th>
+                    <th class="no-print">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in records %}
+                <tr>
+                    <td><input type="text" name="course_(as paalicable)[]" value="{{ row.course }}"></td>
+                    <td><input type="date" name="completion_date[]" value="{{ row.completion_date }}"></td>
+                    <td><input type="text" name="verified_by[]" value="{{ row.verified_by }}"></td>
+                    <td class="no-print"><button type="button" onclick="deleteRow(this)">🗑</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="button" class="add-row-btn no-print" onclick="addRow()">+ Add Row</button>
+        <!--Manager-->
+        <p><strong>Manager Technical Training Recommendation:</strong></p>
+
+        <!-- To continue as -->
+        <div class="recommendation-line">
+            To continue as: ________ Instructor
+        </div>
+
+        <!-- خانة التوقيع -->
+        <div class="signature-section">
+            <div class="signature-box">
+                <label>Name:</label>
+                <input type="text" name="manager_name" placeholder="Manager name">
+            </div>
+            <div class="signature-box">
+                <label>Signature:</label>
+                <input type="text" name="signature" placeholder="Sign here">
+            </div>
+            <div class="signature-box">
+                <label>Date:</label>
+                <input type="text" value="{{ date }}" readonly>
+            </div>
+        </div>
+
+        <!-- الأزرار -->
+        <div class="bottom-buttons no-print">
+            <button type="submit" class="save-btn">💾 Save</button>
+            <button type="button" class="print-btn" onclick="window.print()">🖨 Print</button>
+            <a href="{{ url_for('trainer_detail', trainer_id=trainer_id) }}" class="back-btn">⬅ Back</a>
+        </div>
+    </form>
+
+    <!-- التذييل -->
+    <div class="footer-line">
+        <span>PSAA/TT/F03</span>
+        <span>{{ date }}</span>
+    </div>
+</div>
+
+<script>
+function addRow() {
+    const table = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td><input type="text" name="course[]"></td>
+        <td><input type="date" name="completion_date[]"></td>
+        <td><input type="text" name="verified_by[]"></td>
+        <td class="no-print"><button type="button" onclick="deleteRow(this)">🗑</button></td>
+    `;
+    table.appendChild(newRow);
+}
+
+function deleteRow(btn) {
+    const row = btn.closest("tr");
+    row.remove();
+}
+</script>
+</body>
+</html>
