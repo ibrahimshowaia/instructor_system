@@ -328,5 +328,12 @@ def download_trainers_excel():
     output.seek(0)
     return send_file(output, mimetype="text/csv", as_attachment=True, download_name="trainers.csv")
 
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Hello from Render!"
+
 if __name__ == "__main__":
     app.run(debug=True)
