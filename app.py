@@ -3,8 +3,7 @@ import sqlite3, os
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 from io import BytesIO
-from xhtml2pdf import pisa
-from io import BytesIO, StringIO
+
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
@@ -135,78 +134,6 @@ def initial_page(trainer_id):
     current_date = datetime.today().strftime("%Y-%m-%d")
     return render_template("ast/initial.html", trainer=trainer, records=records, current_date=current_date)
 
-@app.route("/download_initial_pdf/<int:trainer_id>")
-def download_initial_pdf(trainer_id):
-    # مؤقتًا - ارجع إلى نفس الصفحة (لاحقًا يتم توليد PDF)
-    return redirect(url_for("initial_page", trainer_id=trainer_id))
-
-DB_NAME = 'database.db'
-
-@app.route("/download_tcfoi_pdf/<int:trainer_id>")
-def download_tcfoi_pdf(trainer_id):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-
-    # جلب بيانات المدرب
-    cursor.execute("SELECT name, trainer_id, base_month FROM trainers WHERE id = ?", (trainer_id,))
-    row = cursor.fetchone()
-    if not row:
-        return "Trainer not found", 404
-
-    trainer = {
-        "id": trainer_id,
-        "name": row[0],
-        "trainer_id": row[1],
-        "base_month": row[2]
-    }
-
-    # جلب بيانات INITIAL
-    cursor.execute("SELECT course, completion_date, verified_by FROM initial WHERE trainer_id = ?", (trainer_id,))
-    initial_records = [{"course": r[0], "completion_date": r[1], "verified_by": r[2]} for r in cursor.fetchall()]
-
-    # جلب بيانات TCFOI
-    cursor.execute("SELECT course, completion_date, verified_by FROM tcfoi WHERE trainer_id = ?", (trainer_id,))
-    tcfoi_records = [{"course": r[0], "completion_date": r[1], "verified_by": r[2]} for r in cursor.fetchall()]
-
-    conn.close()
-
-    # دمج الصفحتين
-    initial_html = render_template("ast/initial.html", trainer=trainer, records=initial_records, current_date=datetime.now().strftime("%d-%b-%Y"))
-    tcfoi_html = render_template("ast/tcfoi.html", trainer=trainer, records=tcfoi_records, current_date=datetime.now().strftime("%d-%b-%Y"))
-
-    # محتوى موحد PDF
-    full_html = f"""
-    <html>
-    <head>
-        <style>
-            @page {{
-                size: A4;
-                margin: 30px;
-            }}
-            body {{
-                font-family: Arial, sans-serif;
-                font-size: 12px;
-            }}
-            .page-break {{
-                page-break-before: always;
-            }}
-        </style>
-    </head>
-    <body>
-        {initial_html}
-        <div class="page-break"></div>
-        {tcfoi_html}
-    </body>
-    </html>
-    """
-
-    # توليد PDF
-    result = BytesIO()
-    pisa.CreatePDF(StringIO(full_html), dest=result)
-    result.seek(0)
-
-    return send_file(result, as_attachment=True, download_name="Instructor_Forms.pdf", mimetype='application/pdf')
-
 # ------------------------ TCFOI --------------------------
 @app.route("/tcfoi/<int:trainer_id>", methods=["GET", "POST"])
 def tcfoi_page(trainer_id):
@@ -327,13 +254,6 @@ def download_trainers_excel():
     output.write(si.getvalue().encode('utf-8'))
     output.seek(0)
     return send_file(output, mimetype="text/csv", as_attachment=True, download_name="trainers.csv")
-
-from flask import Flask
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "Hello from Render!"
 
 if __name__ == "__main__":
     app.run(debug=True)
