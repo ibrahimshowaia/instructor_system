@@ -261,4 +261,4 @@ def download_trainers_excel():
     return send_file(output, mimetype="text/csv", as_attachment=True, download_name="trainers.csv")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+  app.run(host="0.0.0.0", port=10000)
