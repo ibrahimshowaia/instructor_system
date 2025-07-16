@@ -33,6 +33,19 @@
         <p><strong>Dear:</strong> {{ trainer.name }}</p>
     </div>
 
+    <!--تم-->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-message">
+        {% for message in messages %}
+          <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}  
+
     <!-- النموذج -->
     <form method="POST" action="{{ url_for('tcfoi_page', trainer_id=trainer.id) }}">
         <table class="recurrent-table">
@@ -47,9 +60,9 @@
             <tbody id="tcfoi-table">
                 {% for row in records %}
                 <tr>
-                    <td><input type="text" name="Instructor[]" value="{{ row.Instructor }}" required></td>
+                    <td><input type="text" name="course[]" value="{{ row.course }}" required></td>
                     <td><input type="date" name="completion_date[]" value="{{ row.completion_date }}" required></td>
-                    <td><input type="text" name="Designation_date[]" value="{{ row.Designation_date }}" required></td>
+                    <td><input type="text" name="verified_by[]" value="{{ row.verified_by }}" required></td>
                     <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
                 </tr>
                 {% endfor %}

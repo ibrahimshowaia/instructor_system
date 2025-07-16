@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trainer Dashboard - AST</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -63,15 +62,38 @@
             background-color: #c0392b !important;
         }
 
-        .alert {
-            background-color: #fff5f5;
-            color: #b71c1c;
+        .search-bar {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-bar input {
             padding: 10px;
+            width: 40%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .alert {
             width: 90%;
-            margin: 15px auto;
-            border-left: 5px solid #b71c1c;
-            border-radius: 4px;
+            margin: 10px auto;
+            padding: 10px;
+            border-left: 6px solid;
+            border-radius: 5px;
             font-weight: bold;
+        }
+
+        .alert.red {
+            background-color: #ffe5e5;
+            color: #b71c1c;
+            border-color: #b71c1c;
+        }
+
+        .alert.green {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
         }
 
         table {
@@ -128,40 +150,72 @@
     <h2>Trainer Dashboard</h2>
     <div class="department">Logged in as: <strong>{{ session.get('department', 'Unknown') }}</strong></div>
 
+    <!-- البحث -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by Name or ID...">
+    </div>
+
+    <!-- أزرار -->
     <div class="top-bar">
         <a class="button" href="{{ url_for('add_trainer') }}">+ Add Trainer</a>
         <a class="button" href="{{ url_for('download_trainers_excel') }}">⬇ Export Excel</a>
         <a class="button logout-btn" href="{{ url_for('logout') }}">Logout</a>
     </div>
 
-    {% if alerts %}
-        {% for alert in alerts %}
-            <div class="alert">{{ alert }}</div>
-        {% endfor %}
-    {% endif %}
+    <!-- التنبيهات -->
+    {% for trainer in trainers %}
+        {% if trainer.days_remaining <= 60 %}
+            <div class="alert red">
+                ⚠ {{ trainer.name }} ({{ trainer.trainer_id }}) is expiring soon - {{ trainer.days_remaining }} days left.
+            </div>
+        {% else %}
+            <div class="alert green">
+                ✅ {{ trainer.name }} ({{ trainer.trainer_id }}) is valid - {{ trainer.days_remaining }} days left.
+            </div>
+        {% endif %}
+    {% endfor %}
 
-    <table>
+    <!-- الجدول -->
+    <table id="trainerTable">
         <thead>
             <tr>
                 <th>Trainer Name</th>
                 <th>Trainer ID</th>
                 <th>Base Month</th>
+                <th>Days Remaining</th>
             </tr>
         </thead>
         <tbody>
             {% if trainers %}
             {% for trainer in trainers %}
             <tr>
-                <td><a href="{{ url_for('trainer_detail', trainer_id=trainer.trainer_id) }}">{{ trainer['name'] }}</a></td>
-                <td>{{ trainer['trainer_id'] }}</td>
-                <td>{{ trainer['base_month'] }}</td>
+                <td><a href="{{ url_for('trainer_detail', trainer_id=trainer.trainer_id) }}">{{ trainer.name }}</a></td>
+                <td>{{ trainer.trainer_id }}</td>
+                <td>{{ trainer.base_month }}</td>
+                <td>{{ trainer.days_remaining }}</td>
             </tr>
             {% endfor %}
             {% else %}
-            <tr><td colspan="3" class="no-data">No trainers available.</td></tr>
+            <tr><td colspan="4" class="no-data">No trainers available.</td></tr>
             {% endif %}
         </tbody>
     </table>
+
+    <!-- فلترة البحث -->
+    <script>
+        const input = document.getElementById("searchInput");
+        const table = document.getElementById("trainerTable");
+        input.addEventListener("keyup", function() {
+            const value = this.value.toLowerCase();
+            const rows = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < rows.length; i++) {
+                const name = rows[i].cells[0].textContent.toLowerCase();
+                const id = rows[i].cells[1].textContent.toLowerCase();
+                rows[i].style.display = name.includes(value) || id.includes(value) ? "" : "none";
+            }
+        });
+    </script>
 
 </body>
 </html>

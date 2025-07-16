@@ -36,6 +36,19 @@
         </p>
         <p><strong>Date:</strong> {{ current_date }}</p>
     </div>
+   
+    <!--تم-->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-message">
+        {% for message in messages %}
+          <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}  
 
     <!-- Form -->
     <form method="POST" action="{{ url_for('initial_page', trainer_id=trainer[0]) }}">
@@ -52,8 +65,8 @@
                 {% for row in records %}
                 <tr>
                     <td><input type="text" name="course[]" value="{{ row.course }}" required></td>
-                    <td><input type="date" name="date[]" value="{{ row.completion_date }}" required></td>
-                    <td><input type="text" name="verified[]" value="{{ row.verified_by }}" required></td>
+                    <td><input type="date" name="date[]" value="{{ row.date }}" required></td>
+                    <td><input type="text" name="verified[]" value="{{ row.verified }}" required></td>
                     <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
                 </tr>
                 {% endfor %}

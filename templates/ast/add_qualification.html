@@ -39,8 +39,8 @@
                 {% for row in records %}
                 <tr>
                     <td><input type="text" name="course[]" value="{{ row.course }}" required></td>
-                    <td><input type="date" name="date[]" value="{{ row.completion_date }}" required></td>
-                    <td><input type="text" name="verified[]" value="{{ row.verified_by }}" required></td>
+                    <td><input type="date" name="completion_date[]" required></td>
+                    <td><input type="text" name="verified_by[]" placeholder="verified_by" required></td>
                     <td class="no-print"><button type="button" onclick="deleteRow(this)">🗑</button></td>
                 </tr>
                 {% endfor %}
@@ -67,8 +67,8 @@
         const row = document.createElement("tr");
         row.innerHTML = `
             <td><input type="text" name="course[]" placeholder="Course" required></td>
-            <td><input type="date" name="date[]" required></td>
-            <td><input type="text" name="verified[]" placeholder="Verified By" required></td>
+            <td><input type="date" name="completion_date[]" required></td>
+            <td><input type="text" name="verified_by[]" placeholder="Verified By" required></td>
             <td class="no-print"><button type="button" onclick="deleteRow(this)">🗑</button></td>
         `;
         table.appendChild(row);

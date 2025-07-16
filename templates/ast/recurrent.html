@@ -52,7 +52,7 @@
             <tbody>
                 {% for row in records %}
                 <tr>
-                    <td><input type="text" name="course_(as paalicable)[]" value="{{ row.course }}"></td>
+                    <td><input type="text" name="course[]" value="{{ row.course }}"></td>
                     <td><input type="date" name="completion_date[]" value="{{ row.completion_date }}"></td>
                     <td><input type="text" name="verified_by[]" value="{{ row.verified_by }}"></td>
                     <td class="no-print"><button type="button" onclick="deleteRow(this)">🗑</button></td>
