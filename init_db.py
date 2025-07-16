@@ -18,13 +18,13 @@ CREATE TABLE IF NOT EXISTS trainers (
 )
 """)
 
-# تفاصيل المدرب
+# تفاصيل المدرب (✅ تعديل هنا: detail بدلًا من details)
 c.execute("""
 CREATE TABLE IF NOT EXISTS trainer_details (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     trainer_id TEXT NOT NULL,
     item TEXT,
-    details TEXT
+    detail TEXT
 )
 """)
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS recurrent_records (
 )
 """)
 
-# ✅ Additional Qualifications (متطابق مع app.py)
+# Additional Qualifications
 c.execute("""
 CREATE TABLE IF NOT EXISTS qualification_records (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

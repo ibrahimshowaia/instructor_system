@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Trainer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #004b8d;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-buttons button, .form-buttons a {
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            background-color: #004b8d;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-buttons button:hover, .form-buttons a:hover {
+            background-color: #003366;
+        }
+
+        .form-buttons a {
+            background-color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Edit Trainer</h2>
+
+        <form method="POST">
+            <label for="name">Trainer Name:</label>
+            <input type="text" id="name" name="name" value="{{ trainer.name }}" required>
+
+            <label for="base_month">Base Month:</label>
+            <input type="date" id="base_month" name="base_month" value="{{ trainer.base_month }}" required>
+
+            <div class="form-buttons">
+                <button type="submit">Save</button>
+                <a href="{{ url_for('dashboard') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
