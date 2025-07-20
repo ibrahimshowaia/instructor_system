@@ -11,7 +11,7 @@ body {
 .initial-container,
 .tcfoi-container,
 .qualification-container {
-    max-width: 1000px;
+    max-width: 95%;
     margin: auto;
     background-color: #fff;
     padding: 30px;
@@ -49,28 +49,40 @@ button:hover {
     transform: scale(1.02);
 }
 
-/* أزرار وظيفية محددة */
+/* أزرار محددة */
 button.save-btn {
-    background-color: #004b8d;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    margin-right: 10px;
+}
+
+button.reset-btn {
+    background-color: #6c757d;
     color: white;
     border: none;
 }
 
-button.print-btn {
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-}
-
-button.back-btn {
+a.back-btn {
     background-color: #c0392b;
-    color: white;
-    border: none;
+    color: white !important;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-left: 10px;
+}
+
+a.back-btn:hover {
+    background-color: #a93226;
+    transform: scale(1.03);
 }
 
 button.add-row-btn {
     margin-top: 10px;
-    background-color: #27ae60;
+    background-color: #004b8d;
     color: white;
     border: none;
 }
@@ -101,20 +113,62 @@ td {
     color: #333;
 }
 
-/* الشعار */
-.logo img {
-    max-height: 60px;
-    display: block;
-    margin: auto;
+/* أزرار الحذف */
+.delete-btn {
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
 }
 
-/* التذييل */
-.footer {
-    margin-top: 40px;
+.delete-btn:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* أزرار النموذج */
+.form-btn {
+    display: inline-block;
+    margin: 10px 10px 0;
+    padding: 10px 25px;
+    background-color: #004b8d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.last-updated {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.success-msg {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.search-box {
+    margin: 20px 0 10px;
     display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: #666;
+    justify-content: center;
+}
+
+.search-box input {
+    width: 300px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
 /* الطباعة */
@@ -123,6 +177,7 @@ td {
     .add-row-btn,
     .print-btn,
     .save-btn,
+    .reset-btn,
     .back-btn,
     .form-btn {
         display: none !important;

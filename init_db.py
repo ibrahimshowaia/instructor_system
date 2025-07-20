@@ -4,7 +4,7 @@ import sqlite3
 conn = sqlite3.connect("database.db")
 c = conn.cursor()
 
-# جدول المدربين
+# جدول المدربين (مضاف عمود notes)
 c.execute("""
 CREATE TABLE IF NOT EXISTS trainers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,17 +14,19 @@ CREATE TABLE IF NOT EXISTS trainers (
     initial TEXT,
     recurrent TEXT,
     add_course TEXT,
-    evaluate TEXT
+    evaluate TEXT,
+    notes TEXT
 )
 """)
 
-# تفاصيل المدرب (✅ تعديل هنا: detail بدلًا من details)
+# تفاصيل المدرب (مضاف عمود category)
 c.execute("""
 CREATE TABLE IF NOT EXISTS trainer_details (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     trainer_id TEXT NOT NULL,
     item TEXT,
-    detail TEXT
+    detail TEXT,
+    category TEXT
 )
 """)
 
@@ -110,17 +112,18 @@ c.execute("DELETE FROM qualification_records")
 c.execute("DELETE FROM evaluation_records")
 c.execute("DELETE FROM users")
 
-# بيانات تجريبية
+# بيانات تجريبية للمدربين مع الملاحظات
 sample_trainers = [
-    ("John Smith", "TR001", "2025-04-01", "", "", "", ""),
-    ("Jane Doe", "TR002", "2025-05-15", "", "", "", ""),
-    ("Ali Ahmad", "TR003", "2025-01-10", "", "", "", "")
+    ("John Smith", "TR001", "2025-04-01", "", "", "", "", "Excellent performance"),
+    ("Jane Doe", "TR002", "2025-05-15", "", "", "", "", "Needs more recurrent training"),
+    ("Ali Ahmad", "TR003", "2025-01-10", "", "", "", "", "Promoted to senior level")
 ]
 c.executemany("""
-    INSERT INTO trainers (name, trainer_id, base_month, initial, recurrent, add_course, evaluate)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO trainers (name, trainer_id, base_month, initial, recurrent, add_course, evaluate, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 """, sample_trainers)
 
+# مستخدمين تجريبيين
 sample_users = [
     ("admin", "admin", "+966500000000")
 ]

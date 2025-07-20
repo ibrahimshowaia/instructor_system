@@ -106,17 +106,38 @@ def trainer_detail(trainer_id):
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
+
     if request.method == "POST":
         items = request.form.getlist("item[]")
         details = request.form.getlist("detail[]")
+        categories = request.form.getlist("category[]")
+        general_notes = request.form.get("general_notes")
+        last_updated = datetime.now().strftime("%d %B %Y - %I:%M %p")
+
+        # حذف التفاصيل السابقة
         c.execute("DELETE FROM trainer_details WHERE trainer_id = ?", (trainer_id,))
-        for item, detail in zip(items, details):
-            c.execute("INSERT INTO trainer_details (trainer_id, item, detail) VALUES (?, ?, ?)", (trainer_id, item, detail))
+
+        # إعادة حفظ الصفوف
+        for item, detail, category in zip(items, details, categories):
+            c.execute("""
+                INSERT INTO trainer_details (trainer_id, item, detail, category)
+                VALUES (?, ?, ?, ?)""", (trainer_id, item, detail, category))
+
+        # تحديث الملاحظات
+        c.execute("UPDATE trainers SET notes = ? WHERE trainer_id = ?", (general_notes, trainer_id))
+
         conn.commit()
+        conn.close()
+
+        flash(f"✅ Trainer details updated successfully at {last_updated}.")
+        return redirect(url_for("trainer_detail", trainer_id=trainer_id))  # ✅ تم التصحيح هنا
+
+    # جلب البيانات للعرض
     trainer = c.execute("SELECT * FROM trainers WHERE trainer_id = ?", (trainer_id,)).fetchone()
-    records = c.execute("SELECT item, detail FROM trainer_details WHERE trainer_id = ?", (trainer_id,)).fetchall()
+    records = c.execute("SELECT * FROM trainer_details WHERE trainer_id = ?", (trainer_id,)).fetchall()
     conn.close()
-    return render_template("ast/trainer_detail.html", trainer=trainer, details=records)
+
+    return render_template("ast/trainer_detail.html", trainer=trainer, details=records, datetime=datetime)
 
 @app.route("/initial/<int:trainer_id>", methods=["GET", "POST"])
 def initial_page(trainer_id):
@@ -261,4 +282,4 @@ def download_trainers_excel():
     return send_file(output, mimetype="text/csv", as_attachment=True, download_name="trainers.csv")
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=10000)
+  app.run(host="0.0.0.0", port=10000, debug=True)

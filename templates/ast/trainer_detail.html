@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Trainer Details</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=124">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f4f7fc;
-            padding: 50px;
+            padding: 40px;
             zoom: 1.1;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 95%;
             margin: auto;
             background-color: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
@@ -24,7 +24,7 @@
         h2 {
             text-align: center;
             color: #004b8d;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .info-group {
@@ -35,21 +35,26 @@
 
         .info-group label {
             font-weight: bold;
-            margin-right: 10px;
+            margin-bottom: 5px;
         }
 
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        select,
+        textarea {
             padding: 8px;
             width: 100%;
-            border-radius: 5px;
+            border-radius: 6px;
             border: 1px solid #ccc;
+            margin-top: 5px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
         th, td {
@@ -63,39 +68,65 @@
             color: white;
         }
 
-        .add-row-btn {
+        .add-row-btn, .reset-btn, .save-btn {
             margin-top: 15px;
-            background-color: #004b8d;
-            color: white;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .add-row-btn:hover {
-            background-color: #003366;
+        .add-row-btn {
+            background-color: #004b8d;
+            color: white;
+        }
+
+        .reset-btn {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
         }
 
         .save-btn {
             background-color: #28a745;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
+            margin-right: 10px;
         }
 
-        .save-btn:hover {
-            background-color: #1e7e34;
+        a.back-btn {
+            background-color: #c0392b;
+            color: white !important;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-left: 10px;
+        }
+
+        a.back-btn:hover {
+            background-color: #a93226;
+            transform: scale(1.03);
+        }
+
+        .delete-btn {
+            background-color: #ccc;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #e74c3c;
+            color: white;
         }
 
         .form-btn {
             display: inline-block;
-            margin: 10px;
+            margin: 10px 10px 0;
             padding: 10px 25px;
             background-color: #004b8d;
             color: white;
@@ -106,62 +137,93 @@
             cursor: pointer;
         }
 
-        .form-btn:hover {
-            background-color: #003366;
-        }
-
         .button-group {
             text-align: center;
             margin-top: 30px;
         }
 
-        .delete-btn {
-            background-color: #c0392b;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 6px 12px;
-            cursor: pointer;
+        .last-updated {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
         }
 
-        .delete-btn:hover {
-            background-color: #96281b;
+        .success-msg {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
         }
+
+        .search-box {
+            margin: 20px 0 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- ✅ تأكيد أن الصفحة تم تحديثها -->
+    <h3 style="color:red;">🔥 تم تحديث الصفحة بنجاح</h3>
+
     <div class="container">
         <h2>Trainer Details</h2>
 
-        <form method="POST" action="{{ url_for('trainer_detail', trainer_id=trainer.id) }}">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="success-msg">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('trainer_detail', trainer_id=trainer.trainer_id) }}">
             <div class="info-group">
                 <div style="flex:1; margin-right: 10px;">
                     <label>Trainer Name:</label>
-                    <input type="text" name="trainer_name" value="{{ trainer.name }}">
+                    <input type="text" name="trainer_name" value="{{ trainer.name }}" readonly>
                 </div>
                 <div style="flex:1; margin-right: 10px;">
                     <label>Trainer ID:</label>
-                    <input type="text" name="trainer_id" value="{{ trainer.trainer_id }}">
+                    <input type="text" name="trainer_id" value="{{ trainer.trainer_id }}" readonly>
                 </div>
                 <div style="flex:1;">
                     <label>Base Month:</label>
-                    <input type="date" name="base_month" value="{{ trainer.base_month }}">
+                    <input type="date" name="base_month" value="{{ trainer.base_month }}" readonly>
                 </div>
             </div>
 
-            <table>
+            <div class="search-box">
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="🔍 Search in details...">
+            </div>
+
+            <table id="detail-table">
                 <thead>
                     <tr>
                         <th>Item</th>
                         <th>Details</th>
+                        <th>Category</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody id="detail-table">
+                <tbody>
                     {% for row in details %}
                     <tr>
                         <td><input type="text" name="item[]" value="{{ row.item }}"></td>
                         <td><input type="text" name="detail[]" value="{{ row.detail }}"></td>
+                        <td>
+                            <select name="category[]">
+                                <option value="Training" {% if row.category == 'Training' %}selected{% endif %}>Training</option>
+                                <option value="Note" {% if row.category == 'Note' %}selected{% endif %}>Note</option>
+                                <option value="Other" {% if row.category == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </td>
                         <td><button type="button" class="delete-btn" onclick="removeRow(this)">🗑</button></td>
                     </tr>
                     {% endfor %}
@@ -170,8 +232,18 @@
 
             <button type="button" class="add-row-btn" onclick="addRow()">+ Add Row</button>
 
-            <br>
-            <button type="submit" class="save-btn">💾 Save</button>
+            <label style="margin-top: 20px; display:block;">General Notes:</label>
+            <textarea name="general_notes" rows="3">{{ trainer.notes or "" }}</textarea>
+
+            <div style="margin-top: 20px;">
+                <button type="submit" class="save-btn">💾 Save</button>
+                <button type="reset" class="reset-btn">🔁 Reset</button>
+                <a href="{{ url_for('dashboard') }}" class="back-btn">🔙 Back</a>
+            </div>
+
+            <div class="last-updated">
+                Last updated: {{ datetime.now().strftime("%d %B %Y - %I:%M %p") }}
+            </div>
         </form>
 
         <div class="button-group">
@@ -184,11 +256,18 @@
 
     <script>
         function addRow() {
-            const table = document.getElementById("detail-table");
+            const table = document.getElementById("detail-table").getElementsByTagName("tbody")[0];
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td><input type="text" name="item[]"></td>
                 <td><input type="text" name="detail[]"></td>
+                <td>
+                    <select name="category[]">
+                        <option value="Training">Training</option>
+                        <option value="Note">Note</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </td>
                 <td><button type="button" class="delete-btn" onclick="removeRow(this)">🗑</button></td>
             `;
             table.appendChild(row);
@@ -196,6 +275,19 @@
 
         function removeRow(button) {
             button.closest("tr").remove();
+        }
+
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll("#detail-table tbody tr");
+
+            rows.forEach(row => {
+                const item = row.cells[0].querySelector("input").value.toLowerCase();
+                const detail = row.cells[1].querySelector("input").value.toLowerCase();
+                const category = row.cells[2].querySelector("select").value.toLowerCase();
+                row.style.display = (item.includes(filter) || detail.includes(filter) || category.includes(filter)) ? "" : "none";
+            });
         }
     </script>
 </body>
