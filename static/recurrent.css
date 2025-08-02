@@ -1,13 +1,31 @@
+/* ---------------------- */
+/* 🌐 الخط العام */
+/* ---------------------- */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 22px;
+}
+
+/* ---------------------- */
+/* 📦 الحاوية الأساسية */
+/* ---------------------- */
 .initial-container {
     background-color: white;
-    width: 1100px; /* تم التكبير */
+    width: 95%;
+    max-width: 2600px;
     margin: 40px auto;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    font-size: 16px;
 }
 
+/* ---------------------- */
+/* 🖼️ الشعار */
+/* ---------------------- */
 .logo {
     text-align: center;
     margin-bottom: 20px;
@@ -19,57 +37,79 @@
     margin: 0 auto;
 }
 
+/* ---------------------- */
+/* 📝 العنوان الرئيسي */
+/* ---------------------- */
 h2 {
     text-align: center;
-    font-size: 22px;
-    margin-bottom: 15px;
+    font-size: 26px;
+    margin-bottom: 20px;
     color: #003366;
 }
 
+/* ---------------------- */
+/* 📄 الحقول العلوية */
+/* ---------------------- */
 p {
-    font-size: 16px;
+    font-size: 20px;
     margin: 5px 30px;
 }
 
+/* ---------------------- */
+/* 🧑‍🏫 فئة المدرب (لا تلمس) */
+/* ---------------------- */
 .instructor-category {
     text-align: left;
     margin: 10px 30px;
 }
 
+/* ---------------------- */
+/* 🗂️ اختيار القسم */
+/* ---------------------- */
 .section-select {
-    font-size: 15px;
+    font-size: 18px;
     padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-left: 10px;
 }
 
-/* الجدول */
+/* ---------------------- */
+/* 📊 الجدول الرئيسي */
+/* ---------------------- */
 .recurrent-table {
     width: 100%;
     border-collapse: collapse;
     margin: 30px 0;
+    table-layout: fixed;
 }
 
 .recurrent-table th {
     background-color: #004b8d;
     color: white;
+    font-size: 20px;
 }
 
 .recurrent-table td, .recurrent-table th {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
+    font-size: 20px;
+    word-wrap: break-word;
 }
 
-/* خانة to continue */
+/* ---------------------- */
+/* ✍️ خانة "To continue as..." */
+/* ---------------------- */
 .recommendation-line {
     margin: 40px 30px 10px 30px;
-    font-size: 16px;
+    font-size: 22px;
     font-weight: bold;
 }
 
-/* توقيع واحد أفقي */
+/* ---------------------- */
+/* 🖊️ التوقيع (❌ لا تغييرات) */
+/* ---------------------- */
 .signature-section {
     display: flex;
     justify-content: space-between;
@@ -96,18 +136,21 @@ p {
     background-color: transparent;
 }
 
-/* الأزرار */
+/* ---------------------- */
+/* 📌 الأزرار */
+/* ---------------------- */
 .bottom-buttons {
     margin-top: 40px;
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .bottom-buttons button,
 .bottom-buttons a {
-    padding: 10px 25px;
-    font-size: 15px;
+    padding: 12px 28px;
+    font-size: 18px;
     font-weight: bold;
     border-radius: 6px;
     border: none;
@@ -135,17 +178,23 @@ p {
     opacity: 0.9;
 }
 
-/* التذييل */
+/* ---------------------- */
+/* 🧾 التذييل */
+/* ---------------------- */
 .footer-line {
     display: flex;
     justify-content: space-between;
     margin-top: 60px;
     padding: 0 30px;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
 }
 
-/* للطباعة */
+/* ---------------------- */
+/* 🖨️ إعدادات الطباعة */
+/* ---------------------- */
 @media print {
     .bottom-buttons,
     .no-print {
@@ -161,5 +210,9 @@ p {
 
     .footer-line {
         margin-top: 100px;
+    }
+
+    body {
+        background-color: white;
     }
 }

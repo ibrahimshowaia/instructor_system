@@ -1,138 +1,187 @@
 import sqlite3
 
-# إنشاء أو الاتصال بقاعدة البيانات
-conn = sqlite3.connect("database.db")
-c = conn.cursor()
+# ========== AST DATABASE ==========
+def create_ast_db():
+    conn = sqlite3.connect('ast_database.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS trainers_ast (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            pn TEXT NOT NULL,
+            base_month TEXT NOT NULL,
+            notes TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS details_ast (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            trainer_id INTEGER,
+            item TEXT,
+            detail TEXT,
+            category TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
-# جدول المدربين (مضاف عمود notes)
-c.execute("""
-CREATE TABLE IF NOT EXISTS trainers (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    trainer_id TEXT NOT NULL UNIQUE,
-    base_month TEXT NOT NULL,
-    initial TEXT,
-    recurrent TEXT,
-    add_course TEXT,
-    evaluate TEXT,
-    notes TEXT
-)
-""")
+# ========== RST DATABASE ==========
+def create_rst_db():
+    conn = sqlite3.connect('rst_database.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS trainers_rst (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            pn TEXT NOT NULL,
+            base_month TEXT NOT NULL,
+            notes TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS details_rst (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            trainer_id INTEGER,
+            item TEXT,
+            detail TEXT,
+            category TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
-# تفاصيل المدرب (مضاف عمود category)
-c.execute("""
-CREATE TABLE IF NOT EXISTS trainer_details (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_id TEXT NOT NULL,
-    item TEXT,
-    detail TEXT,
-    category TEXT
-)
-""")
+# ========== MAIN DATABASE ==========
+def create_main_db():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
 
-# TT/F01 - Initial Qualification
-c.execute("""
-CREATE TABLE IF NOT EXISTS ttfoi_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_name TEXT NOT NULL,
-    trainer_id TEXT NOT NULL,
-    course TEXT,
-    date TEXT,
-    verified TEXT
-)
-""")
+    # INITIAL
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS initial_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            course TEXT,
+            date TEXT,
+            verified TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS initial_signatures (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            designation TEXT,
+            manager_name TEXT,
+            manager_signature TEXT,
+            manager_date TEXT,
+            director_name TEXT,
+            director_signature TEXT,
+            director_date TEXT
+        )
+    ''')
 
-# TC/F01 - Designation
-c.execute("""
-CREATE TABLE IF NOT EXISTS tcfoi_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_name TEXT NOT NULL,
-    trainer_id TEXT NOT NULL,
-    course TEXT,
-    completion_date TEXT,
-    verified_by TEXT
-)
-""")
+    # TCFOI
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS tcfoi_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            instructor TEXT,
+            completion_date TEXT,
+            designation TEXT,
+            designation_date TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS tcfoi_signatures (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            director_name TEXT,
+            director_signature TEXT,
+            director_date TEXT
+        )
+    ''')
 
-# Recurrent
-c.execute("""
-CREATE TABLE IF NOT EXISTS recurrent_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_name TEXT NOT NULL,
-    trainer_id TEXT NOT NULL,
-    course TEXT,
-    completion_date TEXT,
-    verified_by TEXT
-)
-""")
+    # RECURRENT
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS recurrent_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            course TEXT,
+            completion_date TEXT,
+            verified_by TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS recurrent_signatures (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            manager_name TEXT,
+            signature TEXT,
+            date TEXT
+        )
+    ''')
 
-# Additional Qualifications
-c.execute("""
-CREATE TABLE IF NOT EXISTS qualification_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_id TEXT NOT NULL,
-    course TEXT,
-    completion_date TEXT,
-    verified_by TEXT
-)
-""")
+    # ADD QUALIFICATION
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS add_qualification_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            course TEXT,
+            date TEXT,
+            verified TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS add_qualification_signatures (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            designation TEXT,
+            manager_name TEXT,
+            manager_signature TEXT,
+            manager_date TEXT,
+            director_name TEXT,
+            director_signature TEXT,
+            director_date TEXT
+        )
+    ''')
 
-# Evaluation
-c.execute("""
-CREATE TABLE IF NOT EXISTS evaluation_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    trainer_id TEXT,
-    trainer_name TEXT,
-    evaluator TEXT,
-    evaluation_date TEXT,
-    rating TEXT,
-    weak_reason TEXT,
-    notes TEXT,
-    file_name TEXT
-)
-""")
+    # EVALUATION
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS evaluation_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section TEXT,
+            trainer_id INTEGER,
+            instructor TEXT,
+            course TEXT,
+            observer TEXT,
+            date TEXT,
+            recommendations TEXT,
+            comments TEXT,
+            observer_signature TEXT,
+            observer_signature_name TEXT,
+            observer_date TEXT,
+            instructor_signature TEXT,
+            instructor_signature_name TEXT,
+            instructor_date TEXT,
+            manager_name TEXT,
+            manager_signature TEXT,
+            manager_date TEXT
+        )
+    ''')
 
-# Users
-c.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    phone_number TEXT
-)
-""")
+    conn.commit()
+    conn.close()
 
-# تنظيف البيانات القديمة (اختياري للتطوير فقط)
-c.execute("DELETE FROM trainers")
-c.execute("DELETE FROM trainer_details")
-c.execute("DELETE FROM ttfoi_records")
-c.execute("DELETE FROM tcfoi_records")
-c.execute("DELETE FROM recurrent_records")
-c.execute("DELETE FROM qualification_records")
-c.execute("DELETE FROM evaluation_records")
-c.execute("DELETE FROM users")
-
-# بيانات تجريبية للمدربين مع الملاحظات
-sample_trainers = [
-    ("John Smith", "TR001", "2025-04-01", "", "", "", "", "Excellent performance"),
-    ("Jane Doe", "TR002", "2025-05-15", "", "", "", "", "Needs more recurrent training"),
-    ("Ali Ahmad", "TR003", "2025-01-10", "", "", "", "", "Promoted to senior level")
-]
-c.executemany("""
-    INSERT INTO trainers (name, trainer_id, base_month, initial, recurrent, add_course, evaluate, notes)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-""", sample_trainers)
-
-# مستخدمين تجريبيين
-sample_users = [
-    ("admin", "admin", "+966500000000")
-]
-c.executemany("""
-    INSERT INTO users (username, password, phone_number)
-    VALUES (?, ?, ?)
-""", sample_users)
-
-conn.commit()
-conn.close()
-
-print("✅ Database and all tables created successfully with sample data.")
+# ========== RUN ALL ==========
+if __name__ == '__main__':
+    create_ast_db()
+    create_rst_db()
+    create_main_db()
+    print("✅ All databases initialized successfully.")

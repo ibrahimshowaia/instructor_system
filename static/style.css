@@ -1,198 +1,175 @@
+/* ---------------------- */
+/* 🌐 الخطوط والألوان الأساسية */
+/* ---------------------- */
 body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #f5f8fc;
-    padding: 40px;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
     margin: 0;
+    padding: 0;
     color: #333;
 }
 
-/* الحاويات العامة لكل الصفحات */
-.container,
-.initial-container,
-.tcfoi-container,
-.qualification-container {
-    max-width: 95%;
+/* ---------------------- */
+/* 📦 الحاويات العامة */
+/* ---------------------- */
+.container {
+    width: 90%;
+    max-width: 1200px;
     margin: auto;
+    padding: 20px;
     background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
 }
 
-/* العنوان الرئيسي */
-h2 {
-    text-align: center;
-    color: #004b8d;
-    margin-bottom: 20px;
-}
-
-/* الحقول والأزرار */
-button,
-input,
-select,
-textarea {
-    font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    outline: none;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-}
-
-button {
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-button:hover {
-    opacity: 0.95;
-    transform: scale(1.02);
-}
-
-/* أزرار محددة */
-button.save-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    margin-right: 10px;
-}
-
-button.reset-btn {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-}
-
-a.back-btn {
-    background-color: #c0392b;
-    color: white !important;
-    padding: 10px 20px;
-    font-weight: bold;
-    border-radius: 6px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    margin-left: 10px;
-}
-
-a.back-btn:hover {
-    background-color: #a93226;
-    transform: scale(1.03);
-}
-
-button.add-row-btn {
-    margin-top: 10px;
-    background-color: #004b8d;
-    color: white;
-    border: none;
-}
-
-/* الجداول */
+/* ---------------------- */
+/* 🧾 الجداول */
+/* ---------------------- */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    font-size: 16px;
     background-color: #fff;
 }
 
-th,
-td {
+th, td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
 }
 
 th {
-    background-color: #004b8d;
+    background-color: #003366;
     color: white;
-    font-size: 15px;
 }
 
-td {
-    font-size: 14px;
-    color: #333;
+/* تحسين شكل الجدول */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-/* أزرار الحذف */
-.delete-btn {
-    background-color: #ccc;
-    border: none;
+table tr:hover {
+    background-color: #e6f0ff;
+}
+
+/* ---------------------- */
+/* 🔘 الأزرار العامة */
+/* ---------------------- */
+button, .btn {
+    padding: 10px 20px;
+    margin: 5px;
+    font-weight: bold;
     border-radius: 5px;
-    padding: 6px 10px;
-    cursor: pointer;
-}
-
-.delete-btn:hover {
-    background-color: #e74c3c;
-    color: white;
-}
-
-/* أزرار النموذج */
-.form-btn {
-    display: inline-block;
-    margin: 10px 10px 0;
-    padding: 10px 25px;
-    background-color: #004b8d;
-    color: white;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    text-decoration: none;
     cursor: pointer;
+    background-color: #003366;
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
-.button-group {
-    text-align: center;
-    margin-top: 30px;
+button:hover, .btn:hover {
+    background-color: #00509e;
 }
 
-.last-updated {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #555;
+.btn-secondary {
+    background-color: #aaa;
 }
 
-.success-msg {
-    color: green;
-    font-weight: bold;
-    margin-top: 10px;
+.btn-secondary:hover {
+    background-color: #888;
 }
 
-.search-box {
-    margin: 20px 0 10px;
-    display: flex;
-    justify-content: center;
+.btn-danger {
+    background-color: #ccc;
+    color: black;
 }
 
-.search-box input {
-    width: 300px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+.btn-danger:hover {
+    background-color: #c62828;
+    color: white;
 }
 
-/* الطباعة */
+/* ---------------------- */
+/* 🖨️ إعدادات الطباعة */
+/* ---------------------- */
 @media print {
-    button,
-    .add-row-btn,
-    .print-btn,
-    .save-btn,
-    .reset-btn,
-    .back-btn,
-    .form-btn {
+    .no-print {
         display: none !important;
     }
-
     body {
         background-color: white;
-        padding: 0;
     }
+}
 
-    .container,
-    .initial-container,
-    .tcfoi-container,
-    .qualification-container {
-        box-shadow: none;
-        padding: 0;
-    }
+/* ---------------------- */
+/* 🖼️ الشعار */
+/* ---------------------- */
+.logo {
+    width: 180px;
+    display: block;
+    margin: 20px auto;
+}
+
+.logo img {
+    height: 65px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ---------------------- */
+/* 📝 العناوين والنصوص */
+/* ---------------------- */
+h1, h2, h3 {
+    color: #003366;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+}
+
+/* ---------------------- */
+/* 📄 التذييل */
+/* ---------------------- */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 40px;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+}
+
+/* ---------------------- */
+/* 🧾 التواقيع وخط اليد */
+/* ---------------------- */
+.signature-line {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-line div {
+    width: 30%;
+    text-align: center;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+    font-size: 14px;
+}
+
+/* ---------------------- */
+/* ✅ الحقول والاختيارات */
+/* ---------------------- */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

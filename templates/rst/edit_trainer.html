@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Trainer - AST</title>
+    <title>Edit Trainer - RST</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         body {
@@ -81,7 +81,7 @@
 
     <!-- شعار الخطوط -->
     <div class="logo">
-        <img src="{{ url_for('static', filename='images/saudia_logo_white.png') }}" alt="Saudia Logo">
+        <img src="{{ url_for('static', filename='saudia_logo_white.png') }}" alt="Saudia Logo">
     </div>
 
     <div class="container">
@@ -96,7 +96,7 @@
 
             <div class="form-buttons">
                 <button type="submit">Save</button>
-                <a href="{{ url_for('dashboard', section='ast') }}">Cancel</a>
+                <a href="{{ url_for('dashboard', section=section) }}">Cancel</a>
             </div>
         </form>
     </div>

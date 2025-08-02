@@ -1,40 +1,181 @@
+/* ---------------------- */
+/* 🌐 الخط العام */
+/* ---------------------- */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 22px;
+}
+
+/* ---------------------- */
+/* 📦 الحاوية الأساسية */
+/* ---------------------- */
 .evaluation-container {
+    width: 95%;
+    max-width: 2800px;
+    margin: 40px auto;
+    background: white;
     padding: 40px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
+/* ---------------------- */
+/* 🖼️ الشعار */
+/* ---------------------- */
 .logo img {
-    max-height: 60px;
-    margin-bottom: 20px;
+    width: 160px;
+    display: block;
+    margin: 0 auto 20px;
 }
 
+/* ---------------------- */
+/* 📝 العنوان الرئيسي */
+/* ---------------------- */
 h2 {
     text-align: center;
-    color: #004b8d;
+    color: #003366;
+    margin-bottom: 30px;
+    font-size: 32px;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
+/* ---------------------- */
+/* 📄 الحقول العلوية */
+/* ---------------------- */
+p {
+    margin: 10px 0;
     font-weight: bold;
-    margin-bottom: 6px;
 }
 
-.form-group input,
-.form-group textarea {
+input[type="text"],
+input[type="date"],
+textarea,
+select {
     width: 100%;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
     border: 1px solid #ccc;
+    font-size: 23px;
+    resize: vertical;
 }
 
-.bottom-buttons {
-    margin-top: 30px;
+/* ---------------------- */
+/* 🧾 جدول التقييم */
+/* ---------------------- */
+.evaluation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+}
+
+.evaluation-table th,
+.evaluation-table td {
+    border: 1px solid #aaa;
+    padding: 12px;
+    text-align: center;
+    font-size: 30px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.evaluation-table th {
+    background-color: #003366;
+    color: white;
+}
+
+.evaluation-table td textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 6px;
+    font-size: 28px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+/* ---------------------- */
+/* ✍️ التوقيع */
+/* ---------------------- */
+.signature-section {
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.signature-box {
+    flex: 1 1 30%;
+    padding: 10px;
+    text-align: left;
+}
+
+.signature-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* ---------------------- */
+/* 📝 recommendations */
+textarea[name="recommendations"] {
+    min-height: 120px;
+    font-size: 35px;
+    resize: vertical;
+}
+
+/* ---------------------- */
+/* 📌 الأزرار */
+/* ---------------------- */
+.bottom-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+button, .back-btn {
+    padding: 1px 30px;
+    font-weight: bold;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+button:hover, .back-btn:hover {
+    background-color: #00509e;
+}
+
+/* ---------------------- */
+/* 🧾 التذييل */
+/* ---------------------- */
+.footer-line {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    font-size: 20px;
+    color: #070707;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+/* ---------------------- */
+/* 🖨️ الطباعة */
+/* ---------------------- */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background-color: white;
+    }
 }

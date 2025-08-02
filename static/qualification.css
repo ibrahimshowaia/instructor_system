@@ -1,33 +1,230 @@
-.qualification-container {
+/* ---------------------- */
+/* 🎨 INITIAL PAGE – TT/F01 STYLING */
+/* ---------------------- */
+
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 22px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------------------- */
+/* 📦 الحاوية الأساسية */
+/* ---------------------- */
+.initial-container {
+    width: 95%;
+    max-width: 2800px;
+    margin: 40px auto;
+    background-color: white;
     padding: 40px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------- */
+/* 🖼️ الشعار */
+/* ---------------------- */
+.initial-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
 }
 
 .logo img {
-    max-height: 60px;
+    height: 110px;
+    display: block;
+    margin: 0 auto;
 }
 
-.qualification-table {
+/* ---------------------- */
+/* 📝 العناوين */
+/* ---------------------- */
+.initial-header {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #003366;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.initial-subheader {
+    text-align: center;
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* ---------------------- */
+/* 👨‍🏫 معلومات المدرب */
+/* ---------------------- */
+.instructor-info {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.instructor-info strong {
+    display: inline-block;
+    width: 170px;
+}
+
+/* ---------------------- */
+/* 📄 جدول التدريب */
+/* ---------------------- */
+.initial-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 25px;
+    margin-top: 20px;
+    font-size: 26px;
+    table-layout: fixed;
 }
 
-.qualification-table th {
-    background-color: #004b8d;
+.initial-table th,
+.initial-table td {
+    border: 1px solid #999;
+    padding: 16px;
+    text-align: center;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.initial-table th {
+    background-color: #003366;
     color: white;
 }
 
-.qualification-table th, .qualification-table td {
+.initial-table textarea {
+    width: 100%;
+    resize: vertical;
+    overflow: hidden;
+    padding: 6px;
+    font-size: 29px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    min-height: 34px;
+    max-height: 120px;
+}
+
+/* ---------------------- */
+/* ➕ زر إضافة صف */
+/* ---------------------- */
+.add-row-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 24px;
+}
+
+.add-row-btn:hover {
+    background-color: #218838;
+    cursor: pointer;
+}
+
+/* ---------------------- */
+/* ✍️ التوصية والموافقة */
+/* ---------------------- */
+.recommendation-section {
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+.recommendation-section label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.recommendation-section input[type="text"],
+.recommendation-section input[type="date"],
+.recommendation-section input[type="email"],
+.recommendation-section textarea {
     padding: 10px;
+    margin: 8px 5px 8px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 26px;
+    width: 200px;
+}
+
+.recommendation-section textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+}
+
+/* ---------------------- */
+/* ✍️ التوقيع */
+/* ---------------------- */
+.signature-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.signature-block .signature-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* ---------------------- */
+/* 📌 الأزرار */
+/* ---------------------- */
+.initial-buttons {
+    margin-top: 30px;
     text-align: center;
 }
 
-.bottom-buttons {
-    margin-top: 30px;
+.initial-buttons button {
+    padding: 15px 30px;
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #003366;
+    color: white;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+
+.initial-buttons button:hover {
+    background-color: #00509e;
+}
+
+/* ---------------------- */
+/* 🧾 التذييل */
+/* ---------------------- */
+.initial-footer {
     display: flex;
     justify-content: space-between;
+    font-size: 20px;
+    margin-top: 50px;
+    color: #333;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+}
+
+/* ---------------------- */
+/* 🖨️ الطباعة */
+/* ---------------------- */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background-color: white;
+    }
+    .initial-container {
+        box-shadow: none;
+        border: none;
+    }
 }

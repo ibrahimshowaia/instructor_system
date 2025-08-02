@@ -5,6 +5,7 @@
     <title>Trainer Details - {{ section|upper }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=124">
     <style>
+        /* نفس التنسيقات تمامًا من نسخة AST */
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f4f7fc;
@@ -228,7 +229,7 @@
         </div>
     </form>
 
-    <!-- ✅ الأزرار المعدّلة هنا -->
+    <!-- زر النماذج -->
     <div class="button-group">
         <a class="form-btn" href="{{ url_for('initial_generic', section=section, trainer_id=trainer.id) }}">INITIAL</a>
         <a class="form-btn" href="{{ url_for('recurrent_generic', section=section, trainer_id=trainer.id) }}">RECURRENT</a>

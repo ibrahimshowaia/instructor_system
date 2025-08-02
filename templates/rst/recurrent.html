@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PSAA Instructor Qualification Record (Recurrent)</title>
+    <title>PSAA Instructor Qualification Record (Recurrent) - RST</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='recurrent.css') }}">
     <style>
@@ -20,7 +20,7 @@
         <img src="{{ url_for('static', filename='images/saudia_logo_white.png') }}" alt="Saudia Logo">
     </div>
 
-    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (RECURRENT)</h2>
+    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (RECURRENT) - RST</h2>
 
     <!-- بيانات المدرب -->
     <p><strong>Instructor Name:</strong> {{ trainer_name }}</p>
@@ -32,8 +32,8 @@
         <label><strong>Instructor Category:</strong>
             <select name="section" class="section-select" required>
                 <option value="">-- Select --</option>
-                <option value="AST" {% if section == 'AST' %}selected{% endif %}>AST</option>
-                <option value="RST" {% if section == 'RST' %}selected{% endif %}>RST</option>
+                <option value="AST" {% if section.upper() == 'AST' %}selected{% endif %}>AST</option>
+                <option value="RST" {% if section.upper() == 'RST' %}selected{% endif %}>RST</option>
             </select>
         </label>
     </div>
