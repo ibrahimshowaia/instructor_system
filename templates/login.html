@@ -107,7 +107,8 @@
       {% endif %}
     {% endwith %}
 
-    <form method="POST" action="/">
+    <!-- ✅ تم إضافة onsubmit لعرض رسالة تأكيد -->
+    <form method="POST" action="/" onsubmit="return confirmLogin()">
       <label for="section">Section:</label>
       <select name="section" required>
         <option value="AST">AST</option>
@@ -143,6 +144,11 @@
         eyeIcon.classList.remove("fa-eye-slash");
         eyeIcon.classList.add("fa-eye");
       }
+    }
+
+    // ✅ هذه هي الدالة الجديدة التي تظهر رسالة التأكيد
+    function confirmLogin() {
+      return confirm("Are you sure you want to login?");
     }
   </script>
 </body>

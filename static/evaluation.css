@@ -155,6 +155,16 @@ button:hover, .back-btn:hover {
     background-color: #00509e;
 }
 
+/* ✅ تكبير حجم أزرار الحفظ والطباعة والرجوع */
+.bottom-buttons button,
+.bottom-buttons .back-btn {
+    font-size: 24px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: bold;
+    min-width: 140px;
+}
+
 /* ---------------------- */
 /* 🧾 التذييل */
 /* ---------------------- */

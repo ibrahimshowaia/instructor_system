@@ -74,8 +74,12 @@ def dashboard(section):
             'days_remaining': days_remaining
         })
 
-    return render_template(f'{section}/dashboard.html', trainers=trainer_list, section=section)
-
+    return render_template(
+        f'{section}/dashboard.html',
+        trainers=trainer_list,
+        section=section,
+        current_time=datetime.now()  # ✅ هذا هو المطلوب إضافته
+    )
 
 # ========== ADD TRAINER ==========
 @app.route('/add_trainer/<section>', methods=['GET', 'POST'])

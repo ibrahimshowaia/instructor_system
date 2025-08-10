@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PSAA Instructor Qualification Record (Recurrent) - RST</title>
+    <title>PSAA Instructor Qualification Record (Recurrent)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='recurrent.css') }}">
     <style>
         @media print {
-            .save-btn, .print-btn, .back-btn, .add-row-btn {
+            .save-btn, .print-btn, .back-btn, .add-row-btn, .section-select {
                 display: none !important;
             }
         }
@@ -15,14 +15,16 @@
 </head>
 <body>
 <div class="initial-container">
-    <!-- الشعار -->
+
+    <!-- Logo -->
     <div class="logo">
         <img src="{{ url_for('static', filename='images/saudia_logo_white.png') }}" alt="Saudia Logo">
     </div>
 
-    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (RECURRENT) - RST</h2>
+    <!-- Title -->
+    <h2>PSAA INSTRUCTOR QUALIFICATION RECORD (RECURRENT)</h2>
 
-    <!-- بيانات المدرب -->
+    <!-- Trainer Info -->
     <p><strong>Instructor Name:</strong> {{ trainer_name }}</p>
     <p><strong>PN:</strong> {{ trainer_id }}</p>
     <p><strong>Date:</strong> {{ date }}</p>
@@ -32,14 +34,15 @@
         <label><strong>Instructor Category:</strong>
             <select name="section" class="section-select" required>
                 <option value="">-- Select --</option>
-                <option value="AST" {% if section.upper() == 'AST' %}selected{% endif %}>AST</option>
-                <option value="RST" {% if section.upper() == 'RST' %}selected{% endif %}>RST</option>
+                <option value="AST" {% if section == 'AST' %}selected{% endif %}>AST</option>
+                <option value="RST" {% if section == 'RST' %}selected{% endif %}>RST</option>
             </select>
         </label>
     </div>
 
+    <!-- Form -->
     <form method="POST">
-        <!-- جدول التدريب -->
+        <!-- Table -->
         <table class="recurrent-table" id="data-table">
             <thead>
                 <tr>
@@ -61,15 +64,16 @@
             </tbody>
         </table>
 
+        <!-- Add Row -->
         <button type="button" class="add-row-btn no-print" onclick="addRow()">+ Add Row</button>
 
-        <!-- Manager Recommendation -->
+        <!-- Recommendation -->
         <p><strong>Manager Technical Training Recommendation:</strong></p>
         <div class="recommendation-line">
             To continue as: ________ Instructor
         </div>
 
-        <!-- توقيع المدير -->
+        <!-- Signature -->
         <div class="signature-section">
             <div class="signature-box">
                 <label>Name:</label>
@@ -85,21 +89,24 @@
             </div>
         </div>
 
-        <!-- الأزرار -->
+        <!-- Buttons -->
+        <!-- Buttons -->
         <div class="bottom-buttons no-print">
-            <button type="submit" class="save-btn">💾 Save</button>
-            <button type="button" class="print-btn" onclick="window.print()">🖨 Print</button>
-            <a href="{{ url_for('trainer_detail', trainer_id=trainer_id, section=section) }}" class="back-btn">⬅ Back</a>
+            <button type="submit" class="button-link">💾 Save</button>
+            <button type="button" class="button-link" onclick="window.print()">🖨 Print</button>
+            <a href="{{ url_for('trainer_detail', section=section, trainer_id=trainer_id) }}" class="back-btn">⬅ Back</a>
         </div>
+
     </form>
 
-    <!-- التذييل -->
+    <!-- Footer -->
     <div class="footer-line">
         <span>PSAA/TT/F03</span>
-        <span>{{ date }}</span>
+        <span>25DEC2022</span>
     </div>
 </div>
 
+<!-- JavaScript -->
 <script>
     function addRow() {
         const table = document.getElementById("data-table").getElementsByTagName("tbody")[0];

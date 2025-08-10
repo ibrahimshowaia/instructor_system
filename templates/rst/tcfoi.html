@@ -1,3 +1,4 @@
+<!-- tcfoi.html (مُعدل للطباعة صفحة واحدة فقط) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +26,24 @@
         .button-link:hover {
             background-color: #003366;
         }
+
+        textarea {
+            width: 100%;
+            resize: vertical;
+        }
+
+        /* نفس ستايل initial لاختيار القسم */
+        .instructor-category { text-align: left; margin: 10px 30px; }
+        .section-select {
+            font-size: 18px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+        }
+        @media print {
+            .instructor-category { display:none !important; }
+        }
     </style>
 </head>
 <body>
@@ -48,19 +67,17 @@
         <p><strong>Dear:</strong> {{ trainer[1] }}</p>
     </div>
 
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div class="flash-message">
-        {% for message in messages %}
-          <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-    {% endwith %}
-
+        <!-- Instructor Category (نفس initial) -->
+        <div class="instructor-category no-print">
+        <label><strong>Instructor Category:</strong>
+                <!-- القيمة بالـ lowercase لأن الراوت يستخدم /tcfoi/<section>/ -->
+                <select class="section-select" onchange="redirectToSection(this.value)">
+                    <option value="ast" {% if section|lower == 'ast' %}selected{% endif %}>AST</option>
+                    <option value="rst" {% if section|lower == 'rst' %}selected{% endif %}>RST</option>
+                </select>
+            </label>
+        </div>
+    
     <!-- Form -->
     <form method="POST" action="{{ url_for('tcfoi_generic', section=section, trainer_id=trainer[0]) }}?source={{ request.args.get('source', '') }}">
         <table class="initial-table">
@@ -72,9 +89,15 @@
                 </tr>
             </thead>
             <tbody id="tcfoi-table">
-                {% for row in records %}
                 <tr>
-                    <td><textarea name="instructor[]" rows="2" oninput="autoResize(this)" required>{{ row.instructor }}</textarea></td>
+                    <td rowspan="1000">
+                        <textarea name="instructor_main" rows="8" oninput="autoResize(this)" required>{{ instructor_main if instructor_main else '' }}</textarea>
+                    </td>
+                    <td><textarea name="designation[]" rows="2" oninput="autoResize(this)" required>{{ records[0].designation if records|length > 0 else '' }}</textarea></td>
+                    <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
+                </tr>
+                {% for row in records[1:] %}
+                <tr>
                     <td><textarea name="designation[]" rows="2" oninput="autoResize(this)" required>{{ row.designation }}</textarea></td>
                     <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
                 </tr>
@@ -100,24 +123,34 @@
         <!-- Buttons -->
         <div class="initial-buttons no-print">
             <button type="submit">💾 Submit</button>
-            <button type="button" onclick="printBothPages()">🖨 Print Both Pages</button>
-            <a href="{{ url_for('trainer_detail', section=section, trainer_id=trainer[0]) }}" class="button-link">⬅ Back</a>
+            <button type="button" onclick="window.print()">🖨 Print</button>
+            <!-- Back باستخدام PN (trainer[2]) لأن مسار trainer_detail يستقبل pn -->
+            <a href="{{ url_for('trainer_detail', section=section, trainer_id=trainer[2]) }}" class="button-link">⬅ Back</a>
         </div>
     </form>
 
     <!-- Footer -->
     <div class="initial-footer">
         <div>PSAA/TC/F01</div>
-        <div>{{ current_date }}</div>
+        <div>12APR2021</div>
     </div>
 </div>
 
+<!-- Scripts -->
 <script>
+    // إعادة التوجيه عند تغيير القسم مع الحفاظ على query string (مثل source)
+    function redirectToSection(newSection) {
+        var trainerId = "{{ trainer[0] }}"; // id الداخلي
+        var qs = window.location.search || ""; // يحفظ ?source=...
+        // يبقى على نفس صفحة tcfoi لكن يبدّل القسم
+        var target = "/tcfoi/" + newSection + "/" + trainerId + qs;
+        window.location.href = target;
+    }
+
     function addRow() {
         const table = document.getElementById("tcfoi-table");
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td><textarea name="instructor[]" rows="2" oninput="autoResize(this)" required></textarea></td>
             <td><textarea name="designation[]" rows="2" oninput="autoResize(this)" required></textarea></td>
             <td class="no-print"><button type="button" onclick="removeRow(this)">🗑</button></td>
         `;
@@ -131,55 +164,6 @@
     function autoResize(textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
-    }
-
-    function printBothPages() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const source = urlParams.get('source') || '';
-
-        let pageToPrint;
-        if (source.toLowerCase().includes('qualification')) {
-            pageToPrint = 'add_qualification_print';
-        } else {
-            pageToPrint = 'initial_print';
-        }
-
-        const pageURL = `/${pageToPrint}/{{ section }}/{{ trainer[0] }}`;
-        const tcfoiHTML = document.documentElement.outerHTML;
-
-        const printWindow = window.open('', '_blank');
-        if (!printWindow) {
-            alert("Please allow pop-ups to print both pages.");
-            return;
-        }
-
-        fetch(pageURL)
-            .then(response => response.text())
-            .then(firstPageHTML => {
-                const fullHTML = `
-                    <html>
-                    <head><title>Print Both</title></head>
-                    <body>
-                        <div>${firstPageHTML}</div>
-                        <hr style="margin: 40px 0;">
-                        <div>${tcfoiHTML}</div>
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                                window.onafterprint = function() {
-                                    window.close();
-                                };
-                            }
-                        <\/script>
-                    </body>
-                    </html>
-                `;
-                printWindow.document.write(fullHTML);
-                printWindow.document.close();
-            })
-            .catch(error => {
-                alert("Failed to fetch first page: " + error);
-            });
     }
 </script>
 </body>

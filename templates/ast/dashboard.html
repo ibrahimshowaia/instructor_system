@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Trainer Dashboard - {{ section.upper() }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta http-equiv="refresh" content="300">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -75,25 +76,29 @@
             border-radius: 6px;
         }
 
-        .alert {
+        .filter-refresh-bar {
             width: 90%;
-            margin: 10px auto;
-            padding: 10px;
-            border-left: 6px solid;
-            border-radius: 5px;
-            font-weight: bold;
+            margin: auto;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+            align-items: center;
         }
 
-        .alert.red {
-            background-color: #ffe5e5;
-            color: #b71c1c;
-            border-color: #b71c1c;
+        select#statusFilter {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
         }
 
-        .alert.green {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border-color: #2e7d32;
+        button.refresh-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #004b8d;
         }
 
         table {
@@ -116,6 +121,7 @@
             background-color: #004b8d;
             color: white;
             font-size: 16px;
+            cursor: pointer;
         }
 
         td {
@@ -144,10 +150,32 @@
             margin: 0 5px;
             font-size: 14px;
         }
+
+        .status-valid, .status-warning, .status-expired {
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-valid .status-dot { background-color: #2e7d32; }
+        .status-warning .status-dot { background-color: #e65100; }
+        .status-expired .status-dot { background-color: #c62828; }
+
+        .last-updated {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-
     <div class="logo">
         <img src="{{ url_for('static', filename='images/saudia_logo_white.png') }}" alt="Saudia Logo">
     </div>
@@ -155,30 +183,27 @@
     <h2>Trainer Dashboard</h2>
     <div class="department">Logged in as: <strong>{{ section.upper() }}</strong></div>
 
-    <!-- البحث -->
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search by Name or ID...">
+    </div>
+
+    <!-- ✅ فلترة الحالة والتحديث -->
+    <div class="filter-refresh-bar">
+        <select id="statusFilter" onchange="filterByStatus()">
+            <option value="">All Status</option>
+            <option value="Valid">✅ Valid</option>
+            <option value="Expiring Soon">⚠️ Expiring Soon</option>
+            <option value="Expired">❌ Expired</option>
+        </select>
+        <button class="refresh-btn" onclick="location.reload()" title="Refresh">🔄</button>
     </div>
 
     <!-- أزرار -->
     <div class="top-bar">
         <a class="button" href="{{ url_for('add_trainer', section=section) }}">+ Add Trainer</a>
         <a class="button" href="{{ url_for('download_trainers_excel', section=section) }}">⬇ Export Excel</a>
-        <a class="button logout-btn" href="{{ url_for('logout') }}">Logout</a>
+        <a class="button logout-btn" href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
     </div>
-
-    <!-- التنبيهات -->
-    {% for trainer in trainers %}
-        {% if trainer.days_remaining <= 60 %}
-            <div class="alert red">
-                ⚠ {{ trainer.name }} ({{ trainer.trainer_id }}) is expiring soon - {{ trainer.days_remaining }} days left.
-            </div>
-        {% else %}
-            <div class="alert green">
-                ✅ {{ trainer.name }} ({{ trainer.trainer_id }}) is valid - {{ trainer.days_remaining }} days left.
-            </div>
-        {% endif %}
-    {% endfor %}
 
     <!-- الجدول -->
     <table id="trainerTable">
@@ -188,6 +213,7 @@
                 <th>Trainer ID</th>
                 <th>Base Month</th>
                 <th>Days Remaining</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -199,6 +225,19 @@
                 <td>{{ trainer.trainer_id }}</td>
                 <td>{{ trainer.base_month }}</td>
                 <td>{{ trainer.days_remaining }}</td>
+                <td class="
+                    {% if trainer.days_remaining > 90 %}status-valid
+                    {% elif trainer.days_remaining >= 0 %}status-warning
+                    {% else %}status-expired{% endif %}">
+                    <span class="status-dot"></span>
+                    {% if trainer.days_remaining > 90 %}
+                        ✅ Valid
+                    {% elif trainer.days_remaining >= 0 %}
+                        ⚠️ Expiring Soon
+                    {% else %}
+                        ❌ Expired
+                    {% endif %}
+                </td>
                 <td class="actions">
                     <a href="{{ url_for('edit_trainer', trainer_id=trainer.id, section=section) }}">✏️ Edit</a> |
                     <a href="{{ url_for('delete_trainer', trainer_id=trainer.id, section=section) }}" onclick="return confirm('Are you sure you want to delete this trainer?');">🗑️ Delete</a>
@@ -206,25 +245,37 @@
             </tr>
             {% endfor %}
             {% else %}
-            <tr><td colspan="5" class="no-data">No trainers available.</td></tr>
+            <tr><td colspan="6" class="no-data">No trainers available.</td></tr>
             {% endif %}
         </tbody>
     </table>
 
-    <!-- فلترة البحث -->
-    <script>
-        const input = document.getElementById("searchInput");
-        const table = document.getElementById("trainerTable");
-        input.addEventListener("keyup", function() {
-            const value = this.value.toLowerCase();
-            const rows = table.getElementsByTagName("tr");
-            for (let i = 1; i < rows.length; i++) {
-                const name = rows[i].cells[0].textContent.toLowerCase();
-                const id = rows[i].cells[1].textContent.toLowerCase();
-                rows[i].style.display = name.includes(value) || id.includes(value) ? "" : "none";
-            }
-        });
-    </script>
+    <div class="last-updated">
+        Last updated: {{ current_time.strftime('%d %b %Y - %I:%M %p') }}
+    </div>
 
+    <!-- JS بحث وفلترة -->
+    <script>
+        document.getElementById("searchInput").addEventListener("keyup", function () {
+            const value = this.value.toLowerCase();
+            const rows = document.querySelectorAll("#trainerTable tbody tr");
+            rows.forEach(row => {
+                const name = row.cells[0]?.textContent.toLowerCase();
+                const id = row.cells[1]?.textContent.toLowerCase();
+                row.style.display = name.includes(value) || id.includes(value) ? "" : "none";
+            });
+        });
+
+        function filterByStatus() {
+            const filter = document.getElementById("statusFilter").value;
+            const rows = document.querySelectorAll("#trainerTable tbody tr");
+            rows.forEach(row => {
+                const statusCell = row.cells[4];
+                if (!statusCell) return;
+                const statusText = statusCell.textContent || "";
+                row.style.display = filter === "" || statusText.includes(filter) ? "" : "none";
+            });
+        }
+    </script>
 </body>
 </html>
